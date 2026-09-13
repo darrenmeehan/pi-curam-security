@@ -1,0 +1,53 @@
+story_id: e02s02
+title: "Engine bin: mem/1 mask/rules/status over stdio"
+status: in_progress
+bcps: 3
+tasks:
+  - id: 1
+    description: >-
+      Add bin/curam-membrane to workspace members; Cargo.toml with
+      [[bin]] name = curam-membrane and curam-core path dep.
+    verify: "cargo build 2>&1 | tail -3"
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["engine"]
+  - id: 2
+    description: >-
+      main.rs: --version path + NDJSON stdin loop (mirror curam-run):
+      parse {id, v, op, payload}, reject wrong v, dispatch ops.
+    verify: >-
+      echo '{"id":1,"v":"mem/1","op":"rules"}' |
+      target/debug/curam-membrane | grep -q rules_hash
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["engine"]
+  - id: 3
+    description: >-
+      mask op: scrub payload.text with default_cfg, reply scrubbed +
+      manifest + rules_version + rules_hash.
+    verify: |-
+      MSG='{"id":2,"v":"mem/1","op":"mask","payload":{"text":"' \
+         'sk-abcdefghijklmn"}}'
+      printf '%s\n' "$MSG" | target/debug/curam-membrane | grep -q REDACTED
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["engine"]
+  - id: 4
+    description: >-
+      status op + envelope errors (bad v, unknown op) return ok:false rows.
+    verify: |-
+      echo '{"id":3,"v":"mem/1","op":"status"}' | \
+        target/debug/curam-membrane | grep -q '"ok":true'
+      echo '{"id":4,"v":"nope","op":"x"}' | \
+        target/debug/curam-membrane | grep -q '"ok":false'
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["engine"]

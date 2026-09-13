@@ -1,0 +1,16 @@
+epic_id: e02
+slug: membrane-phase1
+title: "curam-membrane Phase 1 — engine + pi driver"
+status: active
+bcps: 8
+stories:
+  e02s01: {bcps: 2, title: "Promote sanitizer to curam-core scrub.rs (core PR)"}
+  e02s02: {bcps: 3, title: "Engine bin: mem/1 mask/rules/status over stdio"}
+  e02s03:
+    bcps: 2
+    title: >-
+      Journal log/audit + fingerprints + retention + planted-secret
+      contract test
+  e02s04:
+    bcps: 1
+    title: "pi driver (TS): forward/watermark/degrade + /membrane status"

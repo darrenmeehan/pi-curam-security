@@ -1,0 +1,38 @@
+scope_id: s1-phase1-mvp
+title: "curam-membrane Phase 1 MVP"
+date: 2026-09-13
+status: active
+in_scope:
+  - >-
+    curam-core: promote harness sanitizer to crates/curam-core/src/scrub.rs
+    (new home, behavior parity; harness sanitize.rs switches over in a
+    follow-up PR)
+  - >-
+    engine bin: bin/curam-membrane speaking mem/1 NDJSON over stdio —
+    ops mask | rules | status (s02)
+  - >-
+    mask: deterministic patterns, email class OFF by default (exclude list),
+    manifest + rules_hash stamped
+  - >-
+    journal: log/audit ops, sha256 fingerprints, retention defaults, 0600 (s03)
+  - >-
+    planted-secret contract tests (Python) in curam-membrane/tests
+  - >-
+    thin pi driver (TS): forward tool results, watermark, silent degrade,
+    /membrane status (s04)
+out_of_scope:
+  - >-
+    injection/scan op; cage sandbox exec; budget enforcement; OSV;
+    classifier/deny gate
+  - "whole-message user-prompt scrub (v1.5)"
+  - "entropy detector; split-key/base64-unwrap detection (v1.5+)"
+  - "npm distribution, prebuilt binaries, napi-rs"
+  - "Claude Code / Codex drivers"
+exit_gate:
+  - >-
+    planted secret never appears in provider-bound payload
+    (raw vs scrubbed asserted)
+  - >-
+    a receipt exists: /membrane status + journal rows show secrets caught
+  - "normal daily work shows no behavior change (email OFF)"
+  - "cargo test + python -m pytest tests/ green"

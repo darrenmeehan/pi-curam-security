@@ -1,0 +1,41 @@
+story_id: e02s01
+title: "Promote sanitizer to curam-core scrub.rs (core PR)"
+status: in_progress
+bcps: 2
+tasks:
+  - id: 1
+    description: >-
+      Port sanitize.rs into crates/curam-core/src/scrub.rs; replace harness
+      PiiCfg with a local ScrubCfg (level, placeholder, internal_domains,
+      exclude); keep the 12 patterns + internal_domains behavior identical.
+    verify: >-
+      grep -q 'pub mod scrub;' crates/curam-core/src/lib.rs &&
+      cargo test -p curam-core
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["core"]
+  - id: 2
+    description: >-
+      Add exclude handling, scrub_with_manifest (text + per-kind SpanHits +
+      spans_masked), scrub() wrapper, pattern_kinds(), default_cfg() with
+      email excluded.
+    verify: >-
+      cargo test -p curam-core 2>&1 | grep -q "email_excluded_by_default" &&
+      cargo test -p curam-core 2>&1 | grep -q "test result: ok"
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["core"]
+  - id: 3
+    description: >-
+      Port the five harness unit tests, adapted to ScrubCfg; add
+      email_excluded_by_default + manifest_reports_kinds tests.
+    verify: "cargo test -p curam-core 2>&1 | grep 'passed'"
+    risk: P1
+    status: done
+    allure:
+      severity: high
+      categories: ["core"]

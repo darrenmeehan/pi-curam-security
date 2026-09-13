@@ -1,0 +1,4 @@
+workflow_mode: solo-git
+phase: discover
+epic: e02-membrane-phase1
+status: e02-build-in-progress
