@@ -6,7 +6,10 @@ notes: |
   pi driver v1 ships in drivers/pi (mem/1 client + hooks + /membrane).
   Engine journal 0600 fix committed on curam-security branch
   fix/journal-0600 (not merged to main).
-  E2E spy gate passes: planted secret never reaches a provider payload;
-  journal holds fingerprints only.
-  pi-bolt cannot AOT-compile extensions on the nix install ("not in an
-  installation"); the driver runs file-loaded. See drivers/pi/README.md.
+  E2E spy gate passes with the nix pi-bolt (file-loaded driver) and with
+  an AOT 1.2.1 --out build (driver compiled in). Journal holds
+  fingerprints only in both.
+  AOT: nix store build cannot compile in place; 1.2.0 --out is broken
+  (read-only .compile-* cleanup, EACCES); 1.2.1 --out works. Startup
+  measured 3.51s (file-loaded) vs 0.40s (AOT) via doctor.
+  See drivers/pi/README.md "Compiled (AOT) mode".

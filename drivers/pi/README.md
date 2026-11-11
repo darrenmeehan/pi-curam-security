@@ -78,22 +78,65 @@ there is nothing to compile for the driver to work.
 
 ### Compiled (AOT) mode
 
-`pi-bolt compile` turns installed extensions into machine code. It only
-works on an **installer-based** pi-bolt; a nix-managed pi-bolt lives in an
-immutable store and refuses:
+`pi-bolt compile` bundles the installed extensions and AOT-compiles them to
+machine code. It is the difference between a ~3.5 s and a ~0.4 s startup on
+this machine (measured with `doctor`, which loads every extension):
+
+| Build | doctor wall time |
+| --- | --- |
+| nix `pi-bolt` 1.2.0, extensions file-loaded | 3.51 s |
+| AOT build 1.2.1, extensions compiled in | 0.40 s |
+
+**Requirement: a writable Pi-Bolt installation.** The nixpkgs package runs
+from an immutable store path, so `pi-bolt compile` refuses:
 
 ```
-error: this Pi-Bolt is not in an installation (...): use --out DIR, or install it with the installer
+error: this Pi-Bolt is not in an installation (/nix/store/...): use --out DIR, or install it with the installer
 ```
 
-Options:
+Two working routes:
 
-1. **Leave it file-loaded** (default, verified working).
-2. `pi-bolt compile --out DIR` to build a standalone binary with the driver
-   baked in, then run `DIR/pi-bolt`. This bypasses the nix wrapper (which
-   sets `TMPDIR`), so wire it through `~/code/nix-config` rather than
-   hand-rolling a shell alias.
-3. Use an installer-based pi-bolt for daily use.
+#### 1. Official installer (simplest)
+
+```bash
+curl -fsSL https://pi-bolt.opensec.in/install.sh | sh
+pi-bolt compile            # rebuilds the installed binary with extensions compiled in
+```
+
+The installer keeps a writable installation (`~/.pi-bolt`, cache included)
+and `compile` replaces its executable in place, keeping the previous build
+for `pi-bolt update --rollback`. Make sure its shim comes before the nix
+profile on `PATH`; otherwise you keep running the store build.
+
+`pi-bolt update` reinstalls the release build, so **recompile after every
+update** — `compile.json` remembers which extensions to include.
+
+#### 2. `--out` with a fixed Pi-Bolt (keeps the nix setup)
+
+Pi-Bolt 1.2.1 and later support an out-of-tree build:
+
+```bash
+pi-bolt compile --out ~/.cache/pi-bolt-aot
+~/.cache/pi-bolt-aot/pi --version     # the binary is named `pi`; keep the folder intact
+```
+
+Verified findings:
+
+- **1.2.0 fails `--out`** with `EACCES` while cleaning its `.compile-*`
+  folder (the unpacked runtime and `pi-bolt.txt` are read-only, and the
+  cleanup/`rm` runs without a writable mode). No output is produced.
+- **1.2.1 succeeds** (tested: 13 extensions incl. `curam-membrane-pi`,
+  ~160 s first run, ~20 s AOT step after the kit is cached).
+- `--out` builds are not an installation, so `compile --status` still
+  refuses; use `doctor` to confirm `compiled in` entries.
+- The release tarball's binary is `pi`; the `--out` folder must stay
+  together (assets live beside it).
+
+For a Nix-native setup, bump the pi-bolt pin in
+`~/code/nix-config` (currently 1.2.0) to 1.2.1, then add a wrapper that
+prefers `~/.cache/pi-bolt-aot/pi` when present and falls back to the store
+build. Rebuild the AOT folder after `nix flake update` / pi-bolt version
+changes. Do this in the flake, not with a hand-written alias.
 
 `pi-bolt compile --list` shows what would be compiled in. A changed copy
 always loads from files again until recompiled.

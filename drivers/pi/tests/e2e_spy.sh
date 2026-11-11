@@ -27,8 +27,12 @@ export MEMBRANE_SPY_OUT="$tmp/payloads.jsonl"
 export CUSEC_JOURNAL="$tmp/journal.db"
 
 set +e
+# AOT builds already carry the driver; set E2E_COMPILED_DRIVER=1 to skip -e.
+driver_args=(-e "$driver_dir/index.ts")
+if [ "${E2E_COMPILED_DRIVER:-0}" = "1" ]; then driver_args=(); fi
+
 (cd "$tmp" && "$PI_BIN" --print --no-session \
-  -e "$driver_dir/index.ts" \
+  "${driver_args[@]}" \
   -e "$here/spy.ts" \
   "Use the read tool on secrets.txt, then reply with the single word done.") \
   > "$tmp/stdout" 2> "$tmp/stderr"
