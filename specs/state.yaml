@@ -1,4 +1,12 @@
 workflow_mode: solo-git
-phase: discover
+phase: build
 epic: e02-membrane-phase1
-status: e02-build-in-progress
+status: e02s04-driver-done
+notes: |
+  pi driver v1 ships in drivers/pi (mem/1 client + hooks + /membrane).
+  Engine journal 0600 fix committed on curam-security branch
+  fix/journal-0600 (not merged to main).
+  E2E spy gate passes: planted secret never reaches a provider payload;
+  journal holds fingerprints only.
+  pi-bolt cannot AOT-compile extensions on the nix install ("not in an
+  installation"); the driver runs file-loaded. See drivers/pi/README.md.

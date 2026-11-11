@@ -30,11 +30,11 @@ Stack: Rust (engine linking `crates/curam-core`), TypeScript (pi driver), Python
 
 | Action | Command |
 | -------- | --------- |
-| Run | `pi -e driver/extension.ts` (dev) |
-| Test | `cargo test` + `python -m pytest tests/` |
-| Build | `cargo build` |
-| Lint | `cargo fmt --check` + clippy, `ruff check` |
-| Preflight | `cargo fmt --check && cargo test && python -m pytest tests/` |
+| Run | `pi-bolt -e drivers/pi/index.ts` (dev); install: `pi-bolt install ./drivers/pi` then `pi-bolt compile --only curam-membrane-pi` |
+| Test | `bun test drivers/pi` + `python3 drivers/pi/tests/test_mem_contract.py`; engine: `cargo test -p curam-membrane` in `~/code/curam-security` |
+| Build | engine: `cargo build -p curam-membrane` in `~/code/curam-security` (no bundling for the driver) |
+| Lint | `bun x tsc --noEmit -p drivers/pi` (setup in `drivers/pi/README.md`); Rust: `cargo fmt --check` + clippy |
+| Preflight | `bun x tsc --noEmit -p drivers/pi && bun test drivers/pi && python3 drivers/pi/tests/test_mem_contract.py` |
 | CI | none wired yet |
 
 ## Test

@@ -1,0 +1,45 @@
+story_id: e02s04
+title: "pi driver (TS): forward/watermark/degrade + /membrane status"
+status: in_progress
+bcps: 1
+tasks:
+  - id: 1
+    description: >-
+      drivers/pi/membrane.ts: engine discovery, spawn, NDJSON framing,
+      serialized queue, 3s timeout, one spawn retry, mask/log/status/audit.
+    verify: "bun test drivers/pi"
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["driver"]}
+  - id: 2
+    description: >-
+      maskTextBlocks: mask each text block, watermark on hits, keep images
+      and unknown fields untouched.
+    verify: "bun test drivers/pi"
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["driver"]}
+  - id: 3
+    description: >-
+      index.ts: session_start/tool_result/session_shutdown + /membrane
+      status|audit|rules; footer state; silent degrade.
+    verify: "pi-bolt -e drivers/pi/index.ts --print 'say ok'"
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["driver"]}
+  - id: 4
+    description: >-
+      tests/e2e_spy.sh: planted secret never appears in a
+      before_provider_request payload; journal has fingerprint only.
+    verify: "bash drivers/pi/tests/e2e_spy.sh"
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["driver", "contract"]}
+  - id: 5
+    description: >-
+      Docs: drivers/pi/README.md (install, discovery, env, compile,
+      troubleshooting), root README, AGENTS.md commands.
+    verify: "test -s drivers/pi/README.md"
+    risk: P1
+    status: done
+    allure: {severity: medium, categories: ["docs"]}

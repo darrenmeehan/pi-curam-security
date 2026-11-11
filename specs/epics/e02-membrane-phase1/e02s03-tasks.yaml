@@ -1,0 +1,40 @@
+story_id: e02s03
+title: "Journal log/audit + planted-secret contract test"
+status: in_progress
+bcps: 2
+tasks:
+  - id: 1
+    description: >-
+      journal.rs: events + session_meta schema, hash chain (prev_hash/hash),
+      90-day purge + chain rebuild on open.
+    verify: "cargo test -p curam-membrane 2>&1 | tail -3"
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["journal"]}
+  - id: 2
+    description: >-
+      mem/1 ops log/audit/verify wired in main.rs; log upserts session_meta
+      when payload.harness is present.
+    verify: >-
+      printf '%s\n' '{"id":1,"v":"mem/1","op":"log","payload":{"session_id":"s","harness":"test","etype":"e","payload":{}}}'
+      | target/debug/curam-membrane | grep -q '"ok":true'
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["engine", "journal"]}
+  - id: 3
+    description: >-
+      Enforce 0600 on the journal file (create 0600, tighten on open) and
+      unit-test an existing 0644 file.
+    verify: >-
+      cargo test -p curam-membrane journal_is_0600 2>&1 | grep -q 'test result: ok'
+    risk: P1
+    status: done
+    allure: {severity: high, categories: ["journal"]}
+  - id: 4
+    description: >-
+      Planted-secret contract test in curam-membrane/tests: raw value never
+      in the journal row; manifest + fingerprint present.
+    verify: "python3 tests/test_mem_contract.py"
+    risk: P1
+    status: pending
+    allure: {severity: high, categories: ["contract", "journal"]}
