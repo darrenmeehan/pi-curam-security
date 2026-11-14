@@ -9,7 +9,10 @@ set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 driver_dir=$(cd "$here/.." && pwd)
 
-ENGINE=${MEMBRANE_ENGINE:-$HOME/code/curam-security/target/debug/curam-membrane}
+# The engine you actually ship, not the workspace build: PATH first, and the
+# debug build only as a fallback for a checkout with no install.
+ENGINE=${MEMBRANE_ENGINE:-$(command -v curam-membrane || true)}
+ENGINE=${ENGINE:-$HOME/code/curam-security/target/debug/curam-membrane}
 PI_BIN=${PI_BIN:-pi-bolt}
 
 [ -x "$ENGINE" ] || { echo "SKIP: engine not built at $ENGINE (cargo build -p curam-membrane)"; exit 0; }
