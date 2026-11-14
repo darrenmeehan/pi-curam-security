@@ -18,6 +18,8 @@ const HARNESS = "pi";
 export default function membrane(pi: ExtensionAPI) {
   let client: MembraneClient | undefined;
   let warned = false;
+  let rulesVersion = "";
+  let state: "off" | "on" | "degraded" = "off";
 
   const setStatus = (ctx: ExtensionContext | ExtensionCommandContext, text: string) => {
     if (!ctx.hasUI) return;
@@ -44,8 +46,24 @@ export default function membrane(pi: ExtensionAPI) {
     }
   };
 
+  /**
+   * The engine answered, so the layer is scrubbing again. A degraded session is
+   * not terminal: the client keeps its engine handle and respawns it on the next
+   * request, so the footer has to come back to `on` — otherwise a recovered
+   * session looks broken for the rest of its life. The client is deliberately NOT
+   * dropped on failure; dropping it was what made one crash disable the layer
+   * until the next session.
+   */
+  const healthy = (ctx: ExtensionContext | ExtensionCommandContext, version?: string) => {
+    if (version) rulesVersion = version;
+    warned = false;
+    if (state === "on") return;
+    state = "on";
+    setStatus(ctx, `membrane: on \u00b7 ${rulesVersion}`);
+  };
+
   const degraded = (ctx: ExtensionContext, reason: string) => {
-    client = undefined;
+    state = "degraded";
     setStatus(ctx, "membrane: degraded (results pass through)");
     if (!warned) {
       warned = true;
@@ -56,6 +74,7 @@ export default function membrane(pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
     const engine = resolveEngine();
     if (!engine) {
+      state = "off";
       setStatus(ctx, "membrane: off (no engine found)");
       return;
     }
@@ -63,7 +82,7 @@ export default function membrane(pi: ExtensionAPI) {
     client = new MembraneClient(engine);
     try {
       const status = await client.status();
-      setStatus(ctx, `membrane: on \u00b7 ${status.rules_version}`);
+      healthy(ctx, status.rules_version);
     } catch (error) {
       degraded(ctx, `engine ${engine.command} (${engine.source}) unreachable: ${String(error)}`);
     }
@@ -78,6 +97,8 @@ export default function membrane(pi: ExtensionAPI) {
 
     try {
       const masked = await maskTextBlocks(content, (text) => active.mask(text));
+      // Any answer proves the engine is alive again, with or without hits.
+      healthy(ctx, masked.rules?.rules_version);
       if (!masked.changed) return;
 
       const rules = masked.rules;
@@ -130,6 +151,7 @@ export default function membrane(pi: ExtensionAPI) {
         if (command === "status") {
           const status = await client.status();
           const where = engine ? `${engine.command} (${engine.source})` : "unknown";
+          healthy(ctx, status.rules_version);
           notify(
             ctx,
             [

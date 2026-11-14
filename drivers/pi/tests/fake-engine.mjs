@@ -1,8 +1,18 @@
 #!/usr/bin/env node
 // Fixture mem/1 engine for the driver tests. Modes: default | split | silent.
+import { existsSync, writeFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 
 const mode = process.argv[2] ?? "default";
+
+// crash-once: die inside the first mask request, then behave. With a marker file
+// so the replacement process (the driver respawns) does not crash again.
+const crashMarker = process.env.FIXTURE_CRASH_MARKER;
+const crashOnce = () => {
+  if (!crashMarker || existsSync(crashMarker)) return false;
+  writeFileSync(crashMarker, "1");
+  return true;
+};
 const out = (value, chunks = 1) => {
   const line = JSON.stringify(value) + "\n";
   if (chunks <= 1) {
@@ -51,6 +61,7 @@ rl.on("line", (line) => {
   }
   switch (request.op) {
     case "mask":
+      if (mode === "crash-once" && crashOnce()) process.exit(1);
       reply(request.id, scrub(String(request.payload?.text ?? "")));
       break;
     case "rules":
