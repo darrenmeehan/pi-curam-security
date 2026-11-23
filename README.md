@@ -3,6 +3,9 @@
 Zero-trust boundary security for AI coding agents: scrub agent→provider
 context, journal the audit, expose receipts.
 
+This is one of four curam repos — see `docs/REPOS.md` in the curam-harness repo
+for the whole set and why it is split.
+
 One Rust engine (`bin/curam-membrane` in the `curam-security` workspace)
 speaks the `mem/1` NDJSON contract over stdio. Harness drivers are dumb
 pipes: they forward tool results, inject the scrubbed text, and surface
