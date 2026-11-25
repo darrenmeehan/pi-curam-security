@@ -3,7 +3,7 @@
 Zero-trust boundary security for AI coding agents: scrub agent→provider
 context, journal the audit, expose receipts.
 
-This is one of four curam repos — see `docs/REPOS.md` in the curam-harness-poc repo
+This is one of four curam repos — see [`docs/REPOS.md`](https://github.com/darrenmeehan/curam-harness-poc/blob/main/docs/REPOS.md)
 for the whole set and why it is split.
 
 One Rust engine (`bin/curam-membrane` in the `curam-security` workspace)
