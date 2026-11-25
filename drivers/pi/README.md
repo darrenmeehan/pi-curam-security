@@ -125,7 +125,7 @@ Verified findings:
 - **1.2.0 fails `--out`** with `EACCES` while cleaning its `.compile-*`
   folder (the unpacked runtime and `pi-bolt.txt` are read-only, and the
   cleanup/`rm` runs without a writable mode). No output is produced.
-- **1.2.1 succeeds** (tested: 13 extensions incl. `curam-membrane-pi`,
+- **1.2.1 succeeds** (tested: 13 extensions incl. `pi-curam-security`,
   ~160 s first run, ~20 s AOT step after the kit is cached).
 - `--out` builds are not an installation, so `compile --status` still
   refuses; use `doctor` to confirm `compiled in` entries.

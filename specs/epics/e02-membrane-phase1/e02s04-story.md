@@ -39,7 +39,7 @@ the whole story.
 3. `tests/spy.ts` + `tests/e2e_spy.sh`: planted-secret gate (the spy dumps
    every `before_provider_request` payload).
 4. Install path: `pi-bolt install ./drivers/pi`, then
-   `pi-bolt compile --only curam-membrane-pi` for AOT startup.
+   `pi-bolt compile --only pi-curam-security` for AOT startup.
 
 ## Out of scope
 
