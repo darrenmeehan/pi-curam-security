@@ -1,4 +1,4 @@
-# curam-membrane · pi driver
+# pi-curam-security · pi driver
 
 Thin pi extension: every tool result is masked by the `mem/1` engine before
 the model sees it, the receipt is journaled, and `/membrane` exposes the
@@ -55,7 +55,7 @@ For a stable setup, export `MEMBRANE_ENGINE` in your shell profile (via
 **Dev (file-loaded, hot):**
 
 ```bash
-pi-bolt -e ~/code/curam-membrane/drivers/pi/index.ts
+pi-bolt -e ~/code/pi-curam-security/drivers/pi/index.ts
 ```
 
 **Project-local:** copy or symlink into `.pi/extensions/` (never compiled
@@ -63,13 +63,13 @@ by pi-bolt):
 
 ```bash
 mkdir -p .pi/extensions
-ln -s ~/code/curam-membrane/drivers/pi .pi/extensions/membrane
+ln -s ~/code/pi-curam-security/drivers/pi .pi/extensions/membrane
 ```
 
 **Global (daily driver):**
 
 ```bash
-cd ~/code/curam-membrane
+cd ~/code/pi-curam-security
 pi-bolt install "$PWD/drivers/pi"     # absolute path: relative entries are resolved from ~/.pi/agent
 ```
 

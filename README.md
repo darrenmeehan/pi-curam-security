@@ -1,9 +1,9 @@
-# curam-membrane
+# pi-curam-security
 
 Zero-trust boundary security for AI coding agents: scrub agent→provider
 context, journal the audit, expose receipts.
 
-This is one of four curam repos — see `docs/REPOS.md` in the curam-harness repo
+This is one of four curam repos — see `docs/REPOS.md` in the curam-harness-poc repo
 for the whole set and why it is split.
 
 One Rust engine (`bin/curam-membrane` in the `curam-security` workspace)
@@ -37,7 +37,7 @@ scan, cage exec, budget enforcement, npm distribution.
 cd ~/code/curam-security && cargo build -p curam-membrane
 
 # 2. try the driver
-cd ~/code/curam-membrane
+cd ~/code/pi-curam-security
 pi-bolt -e drivers/pi/index.ts
 
 # 3. install for daily use (absolute path)

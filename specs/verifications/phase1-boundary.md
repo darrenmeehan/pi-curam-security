@@ -9,7 +9,7 @@
 |---|---|
 | engine | `/nix/store/msrcmpmc…-curam-membrane-0.1.0/bin/curam-membrane` (pinned release build, journal ops present) |
 | engine discovery | `source=path` (`~/.nix-profile/bin/curam-membrane`) |
-| driver | curam-membrane `74a8177`, compiled into pi-bolt 1.2.1 |
+| driver | pi-curam-security `74a8177`, compiled into pi-bolt 1.2.1 |
 | harnesses | pi-bolt 1.2.1 (compiled-in driver), Pi 1.5.0 (run-time driver) |
 | model | `deepseek/deepseek-v4.1-flash-1017` via openrouter (flash, 5 calls total) |
 

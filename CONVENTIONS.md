@@ -1,4 +1,4 @@
-# CONVENTIONS.md — curam-membrane
+# CONVENTIONS.md — pi-curam-security
 <!-- BEGIN bigpowers:project -->
 
 ## Preflight

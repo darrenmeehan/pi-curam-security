@@ -1,4 +1,4 @@
-# Plan Audit — curam-membrane
+# Plan Audit — pi-curam-security
 
 **Date:** 2026-09-13 · **Verdict:** READY (Phase 1 engagement)
 
@@ -21,9 +21,9 @@ Q6/Q7 deferred as non-blocking follow-ups.
 
 | Check | Status | Note |
 | --- | --- | --- |
-| AGENTS.md / CLAUDE.md | ❌ | absent in curam-membrane (and siblings) |
+| AGENTS.md / CLAUDE.md | ❌ | absent in pi-curam-security (and siblings) |
 | CONVENTIONS.md | ❌ | absent |
-| specs/ layout | ⚠️ | absent in curam-membrane (this file seeds it); present in curam-security (engine home) |
+| specs/ layout | ⚠️ | absent in pi-curam-security (this file seeds it); present in curam-security (engine home) |
 | Commit conventions | ❌ | nowhere documented (pi global requires Conventional Commits) |
 | Git workflow mode | ❌ | not identified; assume solo-git until confirmed |
 

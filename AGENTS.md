@@ -1,4 +1,4 @@
-# curam-membrane — AI Agents
+# pi-curam-security — AI Agents
 
 > **Multi-agent context** — This file is the canonical project context for **Cline**, **Aider**, **OpenCode**, and other AGENTS.md-native tools. Claude Code and Cursor read it via the `CLAUDE.md` symlink.
 

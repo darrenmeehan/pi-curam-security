@@ -91,7 +91,7 @@ forks.
   `curam-core` directly — no FFI, no duplication, PRs land in the core repo.
   Owns _all_ detection, policy, and storage. One-shot process per call in v1
   (sub-10ms cost per tool result); daemon only if measured.
-- **Drivers** (new repo `curam-membrane`): ~300-line adapters per harness over
+- **Drivers** (new repo `pi-curam-security`): ~300-line adapters per harness over
   one frozen contract. Nothing else.
 - The **contract** (`mem/1`, NDJSON over stdio) is a sibling of the existing
   `cage/1` protocol — same transport-agnostic, replayable philosophy (curam's
@@ -259,7 +259,7 @@ port.
   **Caveat to verify at the gate:** current hooks may not fire for non-shell
   tools reliably in all builds — driver feasibility must be re-validated.
 - **Sequence:** curam-security keeps the engine and owns compliance; the
-  `curam-membrane` repo holds `drivers/{pi,claude,codex}`. The journal is the
+  `pi-curam-security` repo holds `drivers/{pi,claude,codex}`. The journal is the
   proof of cross-harness coherence: _replay one session's journal in another
   tool_ is a demo, not a migration.
 
