@@ -130,7 +130,7 @@ and what actually transfers:
 | stdio NDJSON client pattern | `curam-security/harness-wiring/cage.py` | Contract **pattern** for `mem/1` (replayable, transport-agnostic) |
 | Parity/contract test style | `tests/test_parity.py`, `tests/contract_replay.py` | Replicate for mask parity + mem/1 contract |
 | Aho-Corasick matcher dep | `curam-core` already depends on it | Single-pass scrub pass to replace 12 sequential regex walks (in `curam-core`) |
-| OSV, host matching, cage | `curam-core`, `bin/curam-run` | **Out of scope for v1**; future hooks |
+| OSV, host matching, cage | `curam-core`, `bin/curam-cage` | **Out of scope for v1**; future hooks |
 
 **New code (the small part):** pi driver in TS (~300–500 ln), engine bin
 wrapper (~150–250 ln), policy matrix + manifest + fingerprinting (~300–400 ln
